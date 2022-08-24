@@ -4,7 +4,14 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile-app
+      dockerfile: Dockerfile
+    env_file:
+      - ".env"
     image: clip-web
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    stop_grace_period: "3s"
+    tty: true
     ports:
-      - "5000:5000"
+      - "8080:8080"
+    volumes:
+    - "${DOCKER_WEB_VOLUME:-./public:/app/public}"
